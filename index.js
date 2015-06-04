@@ -18,7 +18,7 @@ app.get('/', function (req, res) {
 			bucket: 'clients',
 			allowMult: true
 		},function (err, result) {
-			if(err) throw new Error(err);
+			if(err) res.end(err);
 			initBucketType = false;
 		});
 	}
