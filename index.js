@@ -9,20 +9,8 @@ var port = process.env.PORT;
 var client = new Riak.Client(riakNodes);
 var clientId = uuid.v4();
 var app = express();
-var initBucketType = true;
 
 app.get('/', function (req, res) {
-	if(initBucketType){
-		client.storeBucketProps({
-			bucketType: 'counters',
-			bucket: 'clients',
-			allowMult: true
-		},function (err, result) {
-			if(err) res.end(err);
-			initBucketType = false;
-		});
-	}
-
 
 	client.updateCounter({
 		bucketType: 'counters',
