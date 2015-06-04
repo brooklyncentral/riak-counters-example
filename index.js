@@ -23,26 +23,19 @@ app.get('/', function (req, res) {
 		});
 	}
 
-	client.fetchCounter({
+
+	client.updateCounter({
 		bucketType: 'counters',
-		bucket: 'clients',
-		key: clientId
-	},
-   	function (err, result) {
-   		if(err) res.end(err);
-		client.updateCounter({
-			bucketType: 'counters',
-	        bucket: 'clients',
-	        key: clientId,
-	        increment: 1
-	    },
-		function(err, result) {
-    		if(err) res.end(err);
-			result.clientId = clientId;
-			res.end(JSON.stringify(result));
-		});
+        bucket: 'clients',
+        key: clientId,
+        increment: 1
+    },
+	function(err, result) {
+		if(err) res.end(err);
+		result.clientId = clientId;
+		res.end(JSON.stringify(result));
+	});
    		
-    });
 });
 
 
