@@ -11,15 +11,20 @@ var clientId = uuid.v4();
 
 var app = express();
 
-client.storeBucketProps({
-	bucketType: 'counters',
-	bucket: 'clients',
-	allowMult: true
-},function (err, result) {
-	if(err) throw new Error(err); 
-});
+var initBucketType = true;
 
 app.get('/', function (req, res) {
+	if(initBucketType){
+		client.storeBucketProps({
+			bucketType: 'counters',
+			bucket: 'clients',
+			allowMult: true
+		},function (err, result) {
+			if(err) throw new Error(err);
+			initBucketType = false;
+		});
+	}
+
 	client.fetchCounter({
 		bucketType: 'counters',
 		bucket: 'clients',
