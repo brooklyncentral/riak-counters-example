@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "basho-riak-client": "^1.2.2",
+    "express": "^4.12.4",
     "uuid": "^2.0.1"
   }
 }
