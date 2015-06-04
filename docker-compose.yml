@@ -3,3 +3,11 @@ riak:
   ports:
    - "8087:8087"
    - "8098:8098"
+counter:
+  build: .
+  ports:
+   - "3000:3000"
+  links:
+   - riak
+  environment:
+   - "RIAK_NODES=riak:8087"

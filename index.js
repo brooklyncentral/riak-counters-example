@@ -5,12 +5,10 @@ var express = require('express');
 var Riak = require('basho-riak-client');
 
 var riakNodes = process.env.RIAK_NODES.split(',');
+var port = process.env.PORT;
 var client = new Riak.Client(riakNodes);
-
 var clientId = uuid.v4();
-
 var app = express();
-
 var initBucketType = true;
 
 app.get('/', function (req, res) {
@@ -48,7 +46,7 @@ app.get('/', function (req, res) {
 });
 
 
-var server = app.listen(process.env.PORT, function () {
+var server = app.listen(port, function () {
 
   	var gracefulExit = function () {
 	    client.shutdown(function (state) {
