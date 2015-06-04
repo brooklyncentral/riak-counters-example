@@ -2,8 +2,6 @@
 
 This is basic node app talking to Riak and utilising it's CRDT counter datatype.
 
-# HOWTO
-
 ## 1. Start the Riak and node app containers
 
 ```sh
@@ -21,7 +19,7 @@ This is needed to create and enable counters bucket-type.
 ## 3. Hit the app and see it counting
 
 ```sh
-open localhost:3000
+open $(boot2docker ip):3000
 ```
 
 # TODO
