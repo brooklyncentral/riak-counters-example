@@ -27,6 +27,3 @@ open $(boot2docker ip):3000
 * minimal UI
 * allow listing all clients with counts
 * remove manual Riak setup step somehow
-
-
-

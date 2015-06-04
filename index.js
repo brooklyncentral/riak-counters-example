@@ -12,31 +12,31 @@ var app = express();
 
 app.get('/', function (req, res) {
 
-	client.updateCounter({
-		bucketType: 'counters',
+    client.updateCounter({
+        bucketType: 'counters',
         bucket: 'clients',
         key: clientId,
         increment: 1
     },
-	function(err, result) {
-		if(err) res.end(err);
-		result.clientId = clientId;
-		res.end(JSON.stringify(result));
-	});
-   		
+    function(err, result) {
+        if(err) res.end(err);
+        result.clientId = clientId;
+        res.end(JSON.stringify(result));
+    });
+
 });
 
 
 var server = app.listen(port, function () {
 
-  	var gracefulExit = function () {
-	    client.shutdown(function (state) {
-	        if (state === Riak.Cluster.State.SHUTDOWN) {
-	            process.exit();
-	        }
-    	});
-	};
+    var gracefulExit = function () {
+        client.shutdown(function (state) {
+            if (state === Riak.Cluster.State.SHUTDOWN) {
+                process.exit();
+            }
+        });
+    };
 
-	process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);
+    process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);
 
 });
