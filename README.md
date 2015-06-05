@@ -1,6 +1,6 @@
 # What?
 
-This is basic node app talking to Riak and utilising it's CRDT counter datatype.
+This is basic node app talking to Riak and utilising the CRDT counter datatype.
 
 ## 1. Start the Riak and node app containers
 
