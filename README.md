@@ -16,11 +16,15 @@ This is needed to create and enable counters bucket-type.
 ./setup-riak.sh
 ```
 
-## 3. Hit the app and see it counting
+## 3. Hit the app
 
 ```sh
-open $(boot2docker ip):3000
+# create counter and increment by making more requests
+open http://$(boot2docker ip):3000
+# see all counters
+open http://$(boot2docker ip):3000/all
 ```
+
 
 # TODO
 
