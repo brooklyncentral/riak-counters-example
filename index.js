@@ -3,6 +3,7 @@
 var uuid = require('uuid');
 var async = require('async');
 var express = require('express');
+var exphbs  = require('express-handlebars');
 var Riak = require('basho-riak-client');
 
 var riakNodes = process.env.RIAK_NODES.split(',');
@@ -10,6 +11,9 @@ var port = process.env.PORT;
 var client = new Riak.Client(riakNodes);
 var clientId = uuid.v4();
 var app = express();
+
+app.engine('handlebars', exphbs());
+app.set('view engine', 'handlebars');
 
 app.get('/', function (req, res) {
     client.updateCounter({
@@ -21,7 +25,7 @@ app.get('/', function (req, res) {
     function(err, result) {
         if(err) return res.end(err);
         result.clientId = clientId;
-        res.json(result);
+        res.render('index', {clients: [result]});
     });
 
 });
@@ -35,7 +39,7 @@ app.get('/all', function (req, res) {
     function (err, result) {
         if(err) return res.end(err);
         var results = {};
-        async.eachSeries(result.keys.sort(),
+        async.mapSeries(result.keys.sort(),
             function (key, callback) {
                 client.fetchCounter({
                     bucketType: 'counters',
@@ -44,12 +48,12 @@ app.get('/all', function (req, res) {
                 },
                 function (err, result) {
                     if(err) return callback(err);
-                    results[key] = result.counterValue;
-                    callback();
+                    result.clientId = key;
+                    callback(null, result);
                 });
-        }, function (err) {
+        }, function (err, results) {
             if(err) return res.end(err);
-            res.json(results);
+            res.render('index', {clients: results});
         });
 
     });

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<style type="text/css">
+		body {
+		  color: #fff;
+		  font: 50px/1 sans-serif;
+		  text-align: center;
+		}
+		.client {
+			background: #233a40;
+			width: 84%;
+			margin: 1% auto;
+			padding: 1%;
+		}
+	</style>
+</head>
+
+<body>
+	{{#each clients}}
+		<div class="client">
+			<h1 class="count">{{counterValue}}</h1>
+			<p class="id">{{clientId}}</p>
+		</div>
+	{{/each}}
+	
+	<script type="text/javascript">
+	(function(){    
+	  	function fitText (els, c) {
+	    var fit = function (el) {
+	    	var resizer = function () {
+	    		w = el.clientWidth;
+	        	el.style.fontSize = w / (c * 10) + 'px';
+	      	};
+	      	resizer();
+	      	window.addEventListener('resize', resizer, false);
+	    };
+
+
+	      [].forEach.call(els, function(el) {
+	      	fit(el);
+	      });
+	  };
+
+	 	fitText(document.getElementsByClassName('count'), 1)
+		fitText(document.getElementsByClassName('id'), 2)
+	})();
+	</script>
+	
+</body>
+</html>

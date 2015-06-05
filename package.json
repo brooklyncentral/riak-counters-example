@@ -5,6 +5,7 @@
     "async": "^1.2.0",
     "basho-riak-client": "^1.2.2",
     "express": "^4.12.4",
+    "express-handlebars": "^2.0.1",
     "uuid": "^2.0.1"
   },
   "repository": {
