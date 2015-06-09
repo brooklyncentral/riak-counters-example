@@ -1,4 +1,4 @@
-FROM mhart/alpine-iojs
+FROM node
 
 RUN mkdir app
 ADD . app
