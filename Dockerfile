@@ -1,7 +1,9 @@
 FROM mhart/alpine-iojs
 
-ADD . /
+RUN mkdir app
+ADD . app
 
+WORKDIR app
 RUN npm install
 
 ENV RIAK_NODES=riak:8087
