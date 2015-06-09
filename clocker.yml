@@ -25,7 +25,7 @@ services:
   - 3000
   env:
     RIAK_NODES:
-      $brooklyn:component("cluster").attributeWhenReady("riak.cluster.nodeList")
+      $brooklyn:component("cluster").attributeWhenReady("riak.cluster.nodeListPbPort")
     PORT:
       3000
   network.list:
