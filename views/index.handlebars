@@ -14,17 +14,27 @@
 			margin: 1% auto;
 			padding: 1%;
 		}
+		.client.error {
+			background: #ff530d;
+
+		}
 	</style>
 </head>
 
 <body>
-	{{#each clients}}
-		<div class="client">
-			<h1 class="count">{{counterValue}}</h1>
-			<p class="id">{{clientId}}</p>
+	{{#if error}}
+		<div class="client error">
+			<p class="id">{{error}}</p>
 		</div>
-	{{/each}}
-	
+	{{else}}
+		{{#each clients}}
+			<div class="client">
+				<h1 class="count">{{counterValue}}</h1>
+				<p class="id">{{clientId}}</p>
+			</div>
+		{{/each}}
+	{{/if}}
+
 	<script type="text/javascript">
 	(function(){    
 	  	function fitText (els, c) {

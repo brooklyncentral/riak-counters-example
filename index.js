@@ -23,7 +23,7 @@ app.get('/', function (req, res) {
         increment: 1
     },
     function(err, result) {
-        if(err) return res.end(err);
+        if(err) return res.render('index', {error: err});
         result.clientId = clientId;
         res.render('index', {clients: [result]});
     });
