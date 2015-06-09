@@ -1,0 +1,32 @@
+id: riak-nodejs-cluster
+name: Riak Cluster with Node.js Webapp Cluster
+origin: "https://github.com/apache/incubator-brooklyn/"
+locations:
+- my-docker-cloud
+
+services:
+- type: brooklyn.networking.VirtualNetwork
+  networkId: public
+- type: brooklyn.networking.VirtualNetwork
+  networkId: riak
+- type: brooklyn.entity.nosql.riak.RiakCluster
+  initialSize: 3
+  id: cluster
+  brooklyn.config:
+    install.version: 2.0.5
+    riak.networking.optimize: false
+    network.list:
+    - riak
+- type: docker:csabapalfi/riak-counters-example:latest
+  id: riak-counters
+  openPorts:
+  - 3000
+  directPorts:
+  - 3000
+  env:
+    RIAK_NODES:
+      $brooklyn:component("cluster").attributeWhenReady("riak.cluster.nodeList")
+    PORT:
+      3000
+  network.list:
+  - public
