@@ -1,6 +1,7 @@
 id: riak-nodejs-cluster
 name: Riak Cluster with Node.js Webapp Cluster
 origin: "https://github.com/apache/incubator-brooklyn/"
+
 locations:
 - my-docker-cloud
 
@@ -9,6 +10,7 @@ services:
   networkId: public
 - type: brooklyn.networking.VirtualNetwork
   networkId: riak
+
 - type: brooklyn.entity.nosql.riak.RiakCluster
   initialSize: 3
   id: cluster
@@ -17,16 +19,38 @@ services:
     riak.networking.optimize: false
     network.list:
     - riak
-- type: docker:csabapalfi/riak-counters-example:latest
-  id: riak-counters
-  openPorts:
-  - 3000
-  directPorts:
-  - 3000
+
+- type: brooklyn.entity.webapp.ControlledDynamicWebAppCluster
+  name: Web Cluster
   brooklyn.config:
-    docker.container.environment:
-      RIAK_NODES: $brooklyn:component("cluster").attributeWhenReady("riak.cluster.nodeListPbPort")
-      PORT: 3000
-      TEST: "test"
-  network.list:
-  - public
+    initialSize: 2
+    dynamiccluster.memberspec:
+      $brooklyn:entitySpec:
+        type: brooklyn.entity.webapp.nodejs.NodeJsWebAppService
+        id: riak-counters-example
+        name: "Riak Counters Node.js Example"
+        brooklyn.config:
+          appName: riak-counters-example
+          gitRepoUrl:
+            "https://github.com/csabapalfi/riak-counters-example"
+          appFileName: index.js
+          docker.direct.ports:
+          - "http.port"
+          docker.container.environment:
+            RIAK_NODES: >
+              $brooklyn:component("cluster").attributeWhenReady("riak.cluster.nodeListPbPort")
+            PORT: 3000
+          network.list:
+          - webapp
+    controlleddynamicwebappcluster.controllerSpec:
+      $brooklyn:entitySpec:
+        type: brooklyn.entity.proxy.haproxy.HAProxyController
+        brooklyn.config:
+          docker.image.name: haproxy
+          docker.image.tag: 1.5.9
+          install.dir: /usr/local/sbin/
+          run.dir: /usr/local/etc/haproxy/
+          network.list:
+          - webapp
+          - public
+          member.sensor.hostname: "host.subnet.hostname"
