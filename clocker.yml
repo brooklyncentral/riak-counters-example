@@ -23,10 +23,10 @@ services:
   - 3000
   directPorts:
   - 3000
-  env:
-    RIAK_NODES:
-      $brooklyn:component("cluster").attributeWhenReady("riak.cluster.nodeListPbPort")
-    PORT:
-      3000
+  brooklyn.config:
+    docker.container.environment:
+      RIAK_NODES: $brooklyn:component("cluster").attributeWhenReady("riak.cluster.nodeListPbPort")
+      PORT: 3000
+      TEST: "test"
   network.list:
   - public
