@@ -72,7 +72,7 @@ app.get('/all', function (req, res) {
                 });
         }, function (err, results) {
             if (err) return res.render('error', {error: err});
-            res.render('counters', {clients: results});
+            res.render('all', {clients: results});
         });
 
     });
