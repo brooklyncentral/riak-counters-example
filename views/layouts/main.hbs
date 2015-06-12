@@ -8,35 +8,25 @@
 		  font: 50px/1 sans-serif;
 		  text-align: center;
 		}
-		.client {
+		.widget {
 			background: #233a40;
 			width: 84%;
 			margin: 1% auto;
 			padding: 1%;
 		}
-		.client.error {
+		.widget.error {
 			background: #ff530d;
-
+		}
+		a, a:visited {
+			color: #fff;
 		}
 	</style>
 </head>
 
 <body>
-	{{#if error}}
-		<div class="client error">
-			<p class="id">{{error}}</p>
-		</div>
-	{{else}}
-		{{#each clients}}
-			<div class="client">
-				<h1 class="count">{{counterValue}}</h1>
-				<p class="id">{{clientId}}</p>
-			</div>
-		{{/each}}
-	{{/if}}
-
+    {{{body}}}
 	<script type="text/javascript">
-	(function(){    
+	(function(){
 	  	function fitText (els, c) {
 	    var fit = function (el) {
 	    	var resizer = function () {
@@ -53,10 +43,10 @@
 	      });
 	  };
 
-	 	fitText(document.getElementsByClassName('count'), 1)
-		fitText(document.getElementsByClassName('id'), 2)
+		fitText(document.getElementsByTagName('h1'), 1);
+		fitText(document.getElementsByTagName('p'), 2);
 	})();
 	</script>
-	
+
 </body>
 </html>
