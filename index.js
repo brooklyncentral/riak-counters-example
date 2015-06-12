@@ -16,40 +16,57 @@ app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 
 app.get('/', function (req, res) {
-    client.updateCounter({
-        bucketType: 'counters',
+    client.fetchValue({
         bucket: 'clients',
         key: clientId,
-        increment: 1
-    },
-    function(err, result) {
-        if(err) return res.render('index', {error: err});
-        result.clientId = clientId;
-        res.render('index', {clients: [result]});
+        convertToJs: true
+    }, function(err, result) {
+        if (err) return res.render('index', {error: err});
+        var value = null;
+        if(result.isNotFound) {
+            value = { counter: 1 };
+        } else {
+            var riakObject = result.values.shift();
+            var oldValue = riakObject.value.counter;
+            riakObject.setValue({counter: oldValue+1});
+            value = riakObject;
+        }
+        client.storeValue({
+            bucket: 'clients',
+            key: clientId,
+            value: value,
+            convertToJs: true,
+            returnBody: true
+        }, function(err, result) {
+            if (err) return res.render('index', {error: err});
+            var counter = result.values.shift().value.counter;
+            res.render('index', {clients: [{clientId: clientId, counterValue: counter}]});
+        });
     });
 
 });
 
 app.get('/all', function (req, res) {
     client.listKeys({
-        bucketType: 'counters',
         bucket: 'clients',
         stream: false
-    }, 
+    },
     function (err, result) {
         if(err) return res.end(err);
         var results = {};
         async.mapSeries(result.keys.sort(),
             function (key, callback) {
-                client.fetchCounter({
-                    bucketType: 'counters',
+                client.fetchValue({
                     bucket: 'clients',
-                    key: key
+                    key: key,
+                    convertToJs: true
                 },
                 function (err, result) {
                     if(err) return callback(err);
-                    result.clientId = key;
-                    callback(null, result);
+                    callback(null, {
+                        clientId: key,
+                        counterValue: result.values.shift().value.counter
+                    });
                 });
         }, function (err, results) {
             if(err) return res.end(err);

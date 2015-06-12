@@ -26,7 +26,7 @@ services:
     initialSize: 2
     dynamiccluster.memberspec:
       $brooklyn:entitySpec:
-        type: brooklyn.entity.webapp.nodejs.NodeJsWebAppService
+        type: brooklyn.entity.webapp.nodejs.patched.NodeJsWebAppService
         id: riak-counters-example
         name: "Riak Counters Node.js Example"
         brooklyn.config:
@@ -34,9 +34,12 @@ services:
           gitRepoUrl:
             "https://github.com/csabapalfi/riak-counters-example"
           appFileName: index.js
-          docker.direct.ports:
-          - "http.port"
-          docker.container.environment:
+          appCommandLine: node
+          docker.directPorts:
+          - 3000
+          docker.openPorts:
+          - 3000
+          shell.env:
             RIAK_NODES: >
               $brooklyn:component("cluster").attributeWhenReady("riak.cluster.nodeListPbPort")
             PORT: 3000
