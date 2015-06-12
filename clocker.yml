@@ -34,7 +34,6 @@ services:
           gitRepoUrl:
             "https://github.com/csabapalfi/riak-counters-example"
           appFileName: index.js
-          appCommandLine: node
           docker.directPorts:
           - 3000
           docker.openPorts:
