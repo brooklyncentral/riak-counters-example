@@ -42,7 +42,7 @@ services:
     initialSize: 2
     dynamiccluster.memberspec:
       $brooklyn:entitySpec:
-        type: brooklyn.entity.webapp.nodejs.patched.NodeJsWebAppService
+        type: brooklyn.entity.webapp.nodejs.NodeJsWebAppService
         id: riak-counters-example
         name: "Riak Counters Node.js Example"
         brooklyn.config:
