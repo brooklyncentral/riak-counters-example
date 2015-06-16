@@ -12,5 +12,8 @@
     "type": "git",
     "url": "https://github.com/csabapalfi/riak-counters-example.git"
   },
-  "license": "MIT"
+  "licenses": [{
+    "type": "Apache-2.0",
+    "url": "http://www.apache.org/licenses/LICENSE-2.0"
+  }]
 }
