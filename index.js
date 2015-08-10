@@ -6,9 +6,9 @@ var express = require('express');
 var exphbs  = require('express-handlebars');
 var Riak = require('basho-riak-client');
 
-var riakNodes = process.env.RIAK_NODES.split(',');
-var port = process.env.PORT;
-var client = new Riak.Client(riakNodes);
+var riakNodes = process.env.RIAK_NODES;
+var port = process.env.PORT || 3000;
+var client = riakNodes ? new Riak.Client(riakNodes.split('')) : null;
 var clientId = uuid.v4();
 var app = express();
 
@@ -19,6 +19,7 @@ app.engine('hbs', exphbs({
 app.set('view engine', 'hbs');
 
 app.get('/', function (req, res) {
+    if(!client) return res.render('error', {error: 'No Riak connection'});
     getCounterValue(clientId, function(err, result) {
         if (err) return res.render('error', {error: err});
         res.render('index', {
