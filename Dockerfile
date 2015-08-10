@@ -1,4 +1,4 @@
-FROM node
+FROM mhart/alpine-node
 
 RUN mkdir app
 ADD . app
@@ -11,4 +11,4 @@ ENV PORT=3000
 
 EXPOSE 3000
 
-CMD node index.js
+CMD ["node", "index.js"]
