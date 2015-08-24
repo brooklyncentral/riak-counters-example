@@ -8,7 +8,7 @@ var Riak = require('basho-riak-client');
 
 var riakNodes = process.env.RIAK_NODES;
 var port = process.env.PORT || 3000;
-var client = riakNodes ? new Riak.Client(riakNodes.split('')) : null;
+var client = riakNodes ? new Riak.Client(riakNodes.split(',')) : null;
 var clientId = uuid.v4();
 var app = express();
 
